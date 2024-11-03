@@ -22,27 +22,7 @@ class StatementPrinter
 
         foreach ($invoice->performances as $performance) {
             $play = $plays[$performance->playId];
-            $thisAmount = 0;
-
-            switch ($play->type) {
-                case 'tragedy':
-                    $thisAmount = 40000;
-                    if ($performance->audience > 30) {
-                        $thisAmount += 1000 * ($performance->audience - 30);
-                    }
-                    break;
-
-                case 'comedy':
-                    $thisAmount = 30000;
-                    if ($performance->audience > 20) {
-                        $thisAmount += 10000 + 500 * ($performance->audience - 20);
-                    }
-                    $thisAmount += 300 * $performance->audience;
-                    break;
-
-                default:
-                    throw new Error("Unknown type: {$play->type}");
-            }
+            $thisAmount = $this->amountFor($play, $performance);
 
             // add volume credits
             $volumeCredits += max($performance->audience - 30, 0);
@@ -61,5 +41,32 @@ class StatementPrinter
         $result .= "Amount owed is {$format ->formatCurrency($totalAmount / 100, 'USD')}\n";
         $result .= "You earned {$volumeCredits} credits";
         return $result;
+    }
+
+    private function amountFor(Play $play, Performance $performance): float
+    {
+        $thisAmount = 0;
+
+        switch ($play->type) {
+            case 'tragedy':
+                $thisAmount = 40000;
+                if ($performance->audience > 30) {
+                    $thisAmount += 1000 * ($performance->audience - 30);
+                }
+                break;
+
+            case 'comedy':
+                $thisAmount = 30000;
+                if ($performance->audience > 20) {
+                    $thisAmount += 10000 + 500 * ($performance->audience - 20);
+                }
+                $thisAmount += 300 * $performance->audience;
+                break;
+
+            default:
+                throw new Error("Unknown type: {$play->type}");
+        }
+
+        return $thisAmount;
     }
 }
