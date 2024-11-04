@@ -22,13 +22,16 @@ class StatementPrinter
         foreach ($invoice->performances as $performance) {
             $play = $plays[$performance->playId];
             $thisAmount = $this->amountFor($play, $performance);
-            $volumeCredits += $this->volumeCreditsFor($performance, $play);
 
-            // print line for this order
             $result .= "  {$play->name}: {$this->asUsd($thisAmount)} ";
             $result .= "({$performance->audience} seats)\n";
 
             $totalAmount += $thisAmount;
+        }
+
+        foreach ($invoice->performances as $performance) {
+            $play = $plays[$performance->playId];
+            $volumeCredits += $this->volumeCreditsFor($performance, $play);
         }
 
         $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
