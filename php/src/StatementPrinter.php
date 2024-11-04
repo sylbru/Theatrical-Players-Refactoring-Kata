@@ -27,10 +27,9 @@ class StatementPrinter
             $totalAmount += $thisAmount;
         }
 
-        $volumeCredits = $this->totalVolumeCredits($invoice, $plays);
-
         $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
-        $result .= "You earned {$volumeCredits} credits";
+        $result .= "You earned {$this->totalVolumeCredits($invoice, $plays)} credits";
+
         return $result;
     }
 
