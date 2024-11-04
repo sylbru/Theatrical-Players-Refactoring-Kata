@@ -27,6 +27,16 @@ class StatementPrinter
             $totalAmount += $thisAmount;
         }
 
+        $volumeCredits = $this->totalVolumeCredits($invoice, $plays);
+
+        $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
+        $result .= "You earned {$volumeCredits} credits";
+        return $result;
+    }
+
+    /** @param Play[] $plays */
+    private function totalVolumeCredits(Invoice $invoice, array $plays): float
+    {
         $volumeCredits = 0;
 
         foreach ($invoice->performances as $performance) {
@@ -34,10 +44,9 @@ class StatementPrinter
             $volumeCredits += $this->volumeCreditsFor($performance, $play);
         }
 
-        $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
-        $result .= "You earned {$volumeCredits} credits";
-        return $result;
+        return $volumeCredits;
     }
+
 
     private function asUsd(int $amount): string
     {
