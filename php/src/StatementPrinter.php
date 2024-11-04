@@ -23,8 +23,11 @@ class StatementPrinter
 
             $result .= "  {$play->name}: {$this->asUsd($thisAmount)} ";
             $result .= "({$performance->audience} seats)\n";
+        }
 
-            $totalAmount += $thisAmount;
+        foreach ($invoice->performances as $performance) {
+            $play = $plays[$performance->playId];
+            $totalAmount += $this->amountFor($play, $performance);
         }
 
         $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
