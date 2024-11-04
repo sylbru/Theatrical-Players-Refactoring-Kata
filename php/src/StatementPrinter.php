@@ -15,8 +15,6 @@ class StatementPrinter
     public function print(Invoice $invoice, array $plays): string
     {
         $totalAmount = 0;
-        $volumeCredits = 0;
-
         $result = "Statement for {$invoice->customer}\n";
 
         foreach ($invoice->performances as $performance) {
@@ -28,6 +26,8 @@ class StatementPrinter
 
             $totalAmount += $thisAmount;
         }
+
+        $volumeCredits = 0;
 
         foreach ($invoice->performances as $performance) {
             $play = $plays[$performance->playId];
