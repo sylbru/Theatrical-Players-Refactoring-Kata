@@ -18,7 +18,6 @@ class StatementPrinter
         $volumeCredits = 0;
 
         $result = "Statement for {$invoice->customer}\n";
-        $format = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
 
         foreach ($invoice->performances as $performance) {
             $play = $plays[$performance->playId];
@@ -26,15 +25,21 @@ class StatementPrinter
             $volumeCredits += $this->volumeCreditsFor($performance, $play);
 
             // print line for this order
-            $result .= "  {$play->name}: {$format->formatCurrency($thisAmount / 100, 'USD')} ";
+            $result .= "  {$play->name}: {$this->formatAmount($thisAmount)} ";
             $result .= "({$performance->audience} seats)\n";
 
             $totalAmount += $thisAmount;
         }
 
-        $result .= "Amount owed is {$format ->formatCurrency($totalAmount / 100, 'USD')}\n";
+        $result .= "Amount owed is {$this->formatAmount($totalAmount)}\n";
         $result .= "You earned {$volumeCredits} credits";
         return $result;
+    }
+
+    private function formatAmount(float $amount): string
+    {
+        $format = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
+        return $format->formatCurrency($amount / 100, 'USD');
     }
 
     private function amountFor(Play $play, Performance $performance): float
