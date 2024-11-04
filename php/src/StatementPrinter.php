@@ -14,7 +14,6 @@ class StatementPrinter
      */
     public function print(Invoice $invoice, array $plays): string
     {
-        $totalAmount = 0;
         $result = "Statement for {$invoice->customer}\n";
 
         foreach ($invoice->performances as $performance) {
@@ -25,15 +24,24 @@ class StatementPrinter
             $result .= "({$performance->audience} seats)\n";
         }
 
+        $totalAmount = $this->totalAmount($invoice, $plays);
+        $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
+        $result .= "You earned {$this->totalVolumeCredits($invoice, $plays)} credits";
+
+        return $result;
+    }
+
+    /** @param Play[] $plays */
+    private function totalAmount(Invoice $invoice, array $plays): int
+    {
+        $totalAmount = 0;
+
         foreach ($invoice->performances as $performance) {
             $play = $plays[$performance->playId];
             $totalAmount += $this->amountFor($play, $performance);
         }
 
-        $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
-        $result .= "You earned {$this->totalVolumeCredits($invoice, $plays)} credits";
-
-        return $result;
+        return $totalAmount;
     }
 
     /** @param Play[] $plays */
