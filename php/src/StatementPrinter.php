@@ -36,13 +36,13 @@ class StatementPrinter
         return $result;
     }
 
-    private function asUsd(float $amount): string
+    private function asUsd(int $amount): string
     {
         $format = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
         return $format->formatCurrency($amount / 100, 'USD');
     }
 
-    private function amountFor(Play $play, Performance $performance): float
+    private function amountFor(Play $play, Performance $performance): int
     {
         $thisAmount = 0;
 
