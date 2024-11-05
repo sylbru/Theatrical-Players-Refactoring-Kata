@@ -18,11 +18,11 @@ class StatementPrinter
         $data->customer = $invoice->customer;
         $data->performances = $invoice->performances;
 
-        return $this->renderStatementPlainText($data, $invoice, $plays);
+        return $this->renderStatementPlainText($data, $plays);
     }
 
     /** @param Play[] $plays */
-    private function renderStatementPlainText(\stdClass $data, Invoice $invoice, array $plays): string
+    private function renderStatementPlainText(\stdClass $data, array $plays): string
     {
         $result = "Statement for {$data->customer}\n";
 
