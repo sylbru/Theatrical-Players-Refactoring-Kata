@@ -34,19 +34,20 @@ class StatementPrinter
             $result .= "({$performance->audience} seats)\n";
         }
 
-        $totalAmount = $this->totalAmount($invoice, $plays);
+        $totalAmount = $this->totalAmount($data->performances, $plays);
         $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
-        $result .= "You earned {$this->totalVolumeCredits($invoice, $plays)} credits";
+        $result .= "You earned {$this->totalVolumeCredits($data->performances, $plays)} credits";
 
         return $result;
     }
 
+    /** @param Performance[] $performances */
     /** @param Play[] $plays */
-    private function totalAmount(Invoice $invoice, array $plays): int
+    private function totalAmount(array $performances, array $plays): int
     {
         $totalAmount = 0;
 
-        foreach ($invoice->performances as $performance) {
+        foreach ($performances as $performance) {
             $play = $plays[$performance->playId];
             $totalAmount += $this->amountFor($play, $performance);
         }
@@ -54,12 +55,13 @@ class StatementPrinter
         return $totalAmount;
     }
 
+    /** @param Performance[] $performances */
     /** @param Play[] $plays */
-    private function totalVolumeCredits(Invoice $invoice, array $plays): float
+    private function totalVolumeCredits(array $performances, array $plays): float
     {
         $volumeCredits = 0;
 
-        foreach ($invoice->performances as $performance) {
+        foreach ($performances as $performance) {
             $play = $plays[$performance->playId];
             $volumeCredits += $this->volumeCreditsFor($performance, $play);
         }
