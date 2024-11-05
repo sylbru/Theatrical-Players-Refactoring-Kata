@@ -14,16 +14,16 @@ class StatementPrinter
      */
     public function print(Invoice $invoice, array $plays): string
     {
-        $data = [];
+        $data = new \stdClass;
+        $data->customer = $invoice->customer;
 
         return $this->renderStatementPlainText($data, $invoice, $plays);
     }
 
-    /** @param array<mixed> $data */
     /** @param Play[] $plays */
-    private function renderStatementPlainText(array $data, Invoice $invoice, array $plays): string
+    private function renderStatementPlainText(\stdClass $data, Invoice $invoice, array $plays): string
     {
-        $result = "Statement for {$invoice->customer}\n";
+        $result = "Statement for {$data->customer}\n";
 
         foreach ($invoice->performances as $performance) {
             $play = $plays[$performance->playId];
