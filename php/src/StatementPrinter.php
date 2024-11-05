@@ -56,7 +56,6 @@ class StatementPrinter
         $totalAmount = 0;
 
         foreach ($enrichedPerformances as $enrichedPerformance) {
-            $play = $plays[$enrichedPerformance->playId];
             $totalAmount += $this->amountFor($enrichedPerformance);
         }
 
@@ -70,8 +69,7 @@ class StatementPrinter
         $volumeCredits = 0;
 
         foreach ($enrichedPerformances as $enrichedPerformances) {
-            $play = $plays[$enrichedPerformances->playId];
-            $volumeCredits += $this->volumeCreditsFor($enrichedPerformances, $play);
+            $volumeCredits += $this->volumeCreditsFor($enrichedPerformances);
         }
 
         return $volumeCredits;
