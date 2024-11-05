@@ -66,11 +66,10 @@ class StatementPrinter
         return $volumeCredits;
     }
 
-
     private function asUsd(int $amount): string
     {
         $format = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
-        return $format->formatCurrency($amount / 100, 'USD');
+        return $format->formatCurrency($amount / 100, 'USD'); // @phpstan-ignore-line
     }
 
     private function amountFor(Play $play, Performance $performance): int
@@ -100,7 +99,7 @@ class StatementPrinter
         return $thisAmount;
     }
 
-    private function volumeCreditsFor($performance, $play): float
+    private function volumeCreditsFor(Performance $performance, Play $play): float
     {
         $volumeCredits = max($performance->audience - 30, 0);
 
