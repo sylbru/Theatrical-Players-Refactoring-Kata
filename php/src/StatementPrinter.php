@@ -6,6 +6,7 @@ namespace Theatrical;
 
 use Error;
 use NumberFormatter;
+use PhpParser\Builder\Enum_;
 
 class StatementPrinter
 {
@@ -16,9 +17,14 @@ class StatementPrinter
     {
         $data = new \stdClass;
         $data->customer = $invoice->customer;
-        $data->performances = $invoice->performances;
+        $data->performances = array_map($this->enrichPerformance(...), $invoice->performances);
 
         return $this->renderStatementPlainText($data, $plays);
+    }
+
+    private function enrichPerformance(Performance $performance): EnrichedPerformance
+    {
+        return new EnrichedPerformance($performance->playId, $performance->audience, null);
     }
 
     /** @param Play[] $plays */
@@ -75,7 +81,7 @@ class StatementPrinter
         return $format->formatCurrency($amount / 100, 'USD'); // @phpstan-ignore-line
     }
 
-    private function amountFor(Play $play, Performance $performance): int
+    private function amountFor(Play $play, EnrichedPerformance $performance): int
     {
         $thisAmount = 0;
 
@@ -102,7 +108,7 @@ class StatementPrinter
         return $thisAmount;
     }
 
-    private function volumeCreditsFor(Performance $performance, Play $play): float
+    private function volumeCreditsFor(EnrichedPerformance $performance, Play $play): float
     {
         $volumeCredits = max($performance->audience - 30, 0);
 
