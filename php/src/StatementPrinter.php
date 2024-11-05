@@ -14,11 +14,14 @@ class StatementPrinter
      */
     public function print(Invoice $invoice, array $plays): string
     {
-        return $this->renderStatementPlainText($invoice, $plays);
+        $data = [];
+
+        return $this->renderStatementPlainText($data, $invoice, $plays);
     }
 
+    /** @param array<mixed> $data */
     /** @param Play[] $plays */
-    private function renderStatementPlainText(Invoice $invoice, array $plays): string
+    private function renderStatementPlainText(array $data, Invoice $invoice, array $plays): string
     {
         $result = "Statement for {$invoice->customer}\n";
 
