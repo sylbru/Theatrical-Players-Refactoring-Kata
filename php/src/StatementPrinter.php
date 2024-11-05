@@ -49,29 +49,29 @@ class StatementPrinter
         return $result;
     }
 
-    /** @param Performance[] $performances */
+    /** @param EnrichedPerformance[] $performances */
     /** @param Play[] $plays */
-    private function totalAmount(array $performances, array $plays): int
+    private function totalAmount(array $enrichedPerformances, array $plays): int
     {
         $totalAmount = 0;
 
-        foreach ($performances as $performance) {
-            $play = $plays[$performance->playId];
-            $totalAmount += $this->amountFor($performance);
+        foreach ($enrichedPerformances as $enrichedPerformance) {
+            $play = $plays[$enrichedPerformance->playId];
+            $totalAmount += $this->amountFor($enrichedPerformance);
         }
 
         return $totalAmount;
     }
 
-    /** @param Performance[] $performances */
+    /** @param EnrichedPerformance[] $performances */
     /** @param Play[] $plays */
-    private function totalVolumeCredits(array $performances, array $plays): float
+    private function totalVolumeCredits(array $enrichedPerformances, array $plays): float
     {
         $volumeCredits = 0;
 
-        foreach ($performances as $performance) {
-            $play = $plays[$performance->playId];
-            $volumeCredits += $this->volumeCreditsFor($performance, $play);
+        foreach ($enrichedPerformances as $enrichedPerformances) {
+            $play = $plays[$enrichedPerformances->playId];
+            $volumeCredits += $this->volumeCreditsFor($enrichedPerformances, $play);
         }
 
         return $volumeCredits;
