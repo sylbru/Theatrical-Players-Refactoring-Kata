@@ -34,12 +34,12 @@ class StatementPrinter
     {
         $result = "Statement for {$data->customer}\n";
 
-        foreach ($data->performances as $performance) {
-            $play = $plays[$performance->playId];
-            $thisAmount = $this->amountFor($play, $performance);
+        foreach ($data->performances as $enrichedPerformance) {
+            $play = $plays[$enrichedPerformance->playId];
+            $thisAmount = $this->amountFor($play, $enrichedPerformance);
 
             $result .= "  {$play->name}: {$this->asUsd($thisAmount)} ";
-            $result .= "({$performance->audience} seats)\n";
+            $result .= "({$enrichedPerformance->audience} seats)\n";
         }
 
         $totalAmount = $this->totalAmount($data->performances, $plays);
