@@ -36,7 +36,7 @@ class StatementPrinter
 
         foreach ($data->performances as $enrichedPerformance) {
             $play = $plays[$enrichedPerformance->playId];
-            $thisAmount = $this->amountFor($enrichedPerformance->play, $enrichedPerformance);
+            $thisAmount = $this->amountFor($enrichedPerformance);
 
             $result .= "  {$play->name}: {$this->asUsd($thisAmount)} ";
             $result .= "({$enrichedPerformance->audience} seats)\n";
@@ -57,7 +57,7 @@ class StatementPrinter
 
         foreach ($performances as $performance) {
             $play = $plays[$performance->playId];
-            $totalAmount += $this->amountFor($play, $performance);
+            $totalAmount += $this->amountFor($performance);
         }
 
         return $totalAmount;
@@ -83,7 +83,7 @@ class StatementPrinter
         return $format->formatCurrency($amount / 100, 'USD'); // @phpstan-ignore-line
     }
 
-    private function amountFor(Play $play, EnrichedPerformance $performance): int
+    private function amountFor(EnrichedPerformance $performance): int
     {
         $thisAmount = 0;
 
@@ -110,7 +110,7 @@ class StatementPrinter
         return $thisAmount;
     }
 
-    private function volumeCreditsFor(EnrichedPerformance $performance, Play $play): float
+    private function volumeCreditsFor(EnrichedPerformance $performance): float
     {
         $volumeCredits = max($performance->audience - 30, 0);
 
