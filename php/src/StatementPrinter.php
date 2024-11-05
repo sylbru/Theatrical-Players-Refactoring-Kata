@@ -26,7 +26,7 @@ class StatementPrinter
     {
         $play = $plays[$performance->playId];
 
-        return new EnrichedPerformance($performance->playId, $performance->audience, $play->name);
+        return new EnrichedPerformance($performance->playId, $performance->audience, $play);
     }
 
     /** @param Play[] $plays */
