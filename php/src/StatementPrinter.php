@@ -35,10 +35,9 @@ class StatementPrinter
         $result = "Statement for {$data->customer}\n";
 
         foreach ($data->performances as $enrichedPerformance) {
-            $play = $plays[$enrichedPerformance->playId];
             $thisAmount = $this->amountFor($enrichedPerformance);
 
-            $result .= "  {$play->name}: {$this->asUsd($thisAmount)} ";
+            $result .= "  {$enrichedPerformance->play->name}: {$this->asUsd($thisAmount)} ";
             $result .= "({$enrichedPerformance->audience} seats)\n";
         }
 
