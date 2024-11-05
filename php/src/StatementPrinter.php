@@ -36,7 +36,7 @@ class StatementPrinter
 
         foreach ($data->performances as $enrichedPerformance) {
             $play = $plays[$enrichedPerformance->playId];
-            $thisAmount = $this->amountFor($play, $enrichedPerformance);
+            $thisAmount = $this->amountFor($enrichedPerformance->play, $enrichedPerformance);
 
             $result .= "  {$play->name}: {$this->asUsd($thisAmount)} ";
             $result .= "({$enrichedPerformance->audience} seats)\n";
@@ -87,7 +87,7 @@ class StatementPrinter
     {
         $thisAmount = 0;
 
-        switch ($play->type) {
+        switch ($performance->play->type) {
             case 'tragedy':
                 $thisAmount = 40000;
                 if ($performance->audience > 30) {
@@ -104,7 +104,7 @@ class StatementPrinter
                 break;
 
             default:
-                throw new Error("Unknown type: {$play->type}");
+                throw new Error("Unknown type: {$performance->play->type}");
         }
 
         return $thisAmount;
@@ -115,7 +115,7 @@ class StatementPrinter
         $volumeCredits = max($performance->audience - 30, 0);
 
         // add extra credit for every ten comedy attendees
-        if ($play->type === 'comedy') {
+        if ($performance->play->type === 'comedy') {
             $volumeCredits += floor($performance->audience / 5);
         }
 
