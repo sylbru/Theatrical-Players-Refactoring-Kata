@@ -16,6 +16,7 @@ class StatementPrinter
     {
         $data = new \stdClass;
         $data->customer = $invoice->customer;
+        $data->performances = $invoice->performances;
 
         return $this->renderStatementPlainText($data, $invoice, $plays);
     }
@@ -25,7 +26,7 @@ class StatementPrinter
     {
         $result = "Statement for {$data->customer}\n";
 
-        foreach ($invoice->performances as $performance) {
+        foreach ($data->performances as $performance) {
             $play = $plays[$performance->playId];
             $thisAmount = $this->amountFor($play, $performance);
 
