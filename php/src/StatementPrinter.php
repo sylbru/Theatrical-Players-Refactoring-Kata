@@ -17,14 +17,16 @@ class StatementPrinter
     {
         $data = new \stdClass;
         $data->customer = $invoice->customer;
-        $data->performances = array_map($this->enrichPerformance(...), $invoice->performances);
+        $data->performances = array_map(fn($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
 
         return $this->renderStatementPlainText($data, $plays);
     }
 
-    private function enrichPerformance(Performance $performance): EnrichedPerformance
+    private function enrichPerformance(Performance $performance, $plays): EnrichedPerformance
     {
-        return new EnrichedPerformance($performance->playId, $performance->audience, null);
+        $play = $plays[$performance->playId];
+
+        return new EnrichedPerformance($performance->playId, $performance->audience, $play->name);
     }
 
     /** @param Play[] $plays */
