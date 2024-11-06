@@ -13,4 +13,9 @@ class EnrichedPerformance
         public ?int $amount,
     ) {
     }
+
+    public function toSimplePerformance(): Performance
+    {
+        return new Performance($this->playId, $this->audience);
+    }
 }
