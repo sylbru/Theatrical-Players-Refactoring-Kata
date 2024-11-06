@@ -25,7 +25,7 @@ class StatementPrinter
     }
 
     /** @param Play[] $plays */
-    private function renderStatementPlainText(\stdClass $data, array $plays): string
+    private function renderStatementPlainText(\stdClass $data): string
     {
         $result = "Statement for {$data->customer}\n";
 
