@@ -6,7 +6,6 @@ namespace Theatrical;
 
 use Error;
 use NumberFormatter;
-use PhpParser\Builder\Enum_;
 
 class StatementPrinter
 {
@@ -30,19 +29,20 @@ class StatementPrinter
         return $this->renderStatementHtml($data);
     }
 
-    private function prepareStatementData(Invoice $invoice, array $plays): \stdClass
+    private function prepareStatementData(Invoice $invoice, array $plays): StatementData
     {
-        $data = new \stdClass;
-        $data->customer = $invoice->customer;
-        $data->performances = array_map(fn($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
-        $data->totalAmount = $this->totalAmount($data->performances, $plays);
-        $data->volumeCredits = $this->totalVolumeCredits($data->performances, $plays);
+        $enrichedPerformances = array_map(fn($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
 
-        return $data;
+        return new StatementData(
+            customer: $invoice->customer,
+            performances: $enrichedPerformances,
+            totalAmount: $this->totalAmount($enrichedPerformances, $plays),
+            volumeCredits: $this->totalVolumeCredits($enrichedPerformances, $plays),
+        );
     }
 
     /** @param Play[] $plays */
-    private function renderStatementPlainText(\stdClass $data): string
+    private function renderStatementPlainText(StatementData $data): string
     {
         $result = "Statement for {$data->customer}\n";
 
@@ -59,7 +59,7 @@ class StatementPrinter
 
 
     /** @param Play[] $plays */
-    private function renderStatementHtml(\stdClass $data): string
+    private function renderStatementHtml(StatementData $data): string
     {
         $result = "<h1>Statement for {$data->customer}</h1>\n";
 
