@@ -130,8 +130,8 @@ class StatementPrinter
     private function createPerformanceCalculator(Performance $performance, Play $play): PerformanceCalculator
     {
         return match ($play->type) {
-            "comedy" => (new PerformanceCalculator($performance, $play)),
-            "tragedy" => (new PerformanceCalculator($performance, $play)),
+            "comedy" => (new ComedyPerformanceCalculator($performance, $play)),
+            "tragedy" => (new TragedyPerformanceCalculator($performance, $play)),
         };
     }
 
