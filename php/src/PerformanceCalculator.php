@@ -23,11 +23,7 @@ class PerformanceCalculator
                 throw new Error("should use polymorphism");
 
             case 'comedy':
-                $thisAmount = 30000;
-                if ($this->performance->audience > 20) {
-                    $thisAmount += 10000 + 500 * ($this->performance->audience - 20);
-                }
-                $thisAmount += 300 * $this->performance->audience;
+                throw new Error("idem");
                 break;
 
             default:
