@@ -129,7 +129,10 @@ class StatementPrinter
 
     private function createPerformanceCalculator(Performance $performance, Play $play): PerformanceCalculator
     {
-        return (new PerformanceCalculator($performance, $play));
+        return match ($play->type) {
+            "comedy" => (new PerformanceCalculator($performance, $play)),
+            "tragedy" => (new PerformanceCalculator($performance, $play)),
+        };
     }
 
     private function asUsd(int $amount): string
