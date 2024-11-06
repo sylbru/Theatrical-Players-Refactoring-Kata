@@ -161,13 +161,7 @@ class StatementPrinter
 
     private function volumeCreditsFor(EnrichedPerformance $performance): float
     {
-        $volumeCredits = max($performance->audience - 30, 0);
-
-        // add extra credit for every ten comedy attendees
-        if ($performance->play->type === 'comedy') {
-            $volumeCredits += floor($performance->audience / 5);
-        }
-
-        return $volumeCredits;
+        return (new PerformanceCalculator($performance->toSimplePerformance(), $performance->play))
+            ->calculateVolumeCredits();
     }
 }
