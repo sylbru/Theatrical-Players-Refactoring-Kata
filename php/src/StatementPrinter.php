@@ -98,6 +98,8 @@ class StatementPrinter
 
     private function enrichPerformance(Performance $performance, $plays): EnrichedPerformance
     {
+        $calculator = new PerformanceCalculator($performance);
+
         $play = $plays[$performance->playId];
         $enrichedPerformanceWithoutAmount = new EnrichedPerformance($performance->playId, $performance->audience, $play, null);
 
