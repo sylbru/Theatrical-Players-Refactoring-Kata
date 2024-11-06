@@ -100,14 +100,14 @@ class StatementPrinter
     {
         $calculator = new PerformanceCalculator($performance, $plays[$performance->playId]);
 
-        $enrichedPerformanceWithoutAmount = new EnrichedPerformance($performance->playId, $performance->audience, $calculator->play, null);
-
-        return new EnrichedPerformance($performance->playId, $performance->audience, $calculator->play, $this->amountFor($enrichedPerformanceWithoutAmount));
+        return new EnrichedPerformance(
+            $performance->playId,
+            $performance->audience,
+            $calculator->play,
+            $calculator->calculateAmount(),
+        );
     }
 
-    /**
-     * @param Play[] $plays
-     */
     private function totalAmount(array $enrichedPerformances): int
     {
         return array_reduce(
