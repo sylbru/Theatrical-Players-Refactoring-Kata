@@ -29,6 +29,9 @@ class StatementPrinter
         return $this->renderStatementHtml($data);
     }
 
+    /**
+     * @param array<Play> $plays
+     */
     private function prepareStatementData(Invoice $invoice, array $plays): StatementData
     {
         $enrichedPerformances = array_map(fn ($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
@@ -96,6 +99,9 @@ class StatementPrinter
         return $result;
     }
 
+    /**
+     * @param array<Play> $plays
+     */
     private function enrichPerformance(Performance $performance, $plays): EnrichedPerformance
     {
         $calculator = $this->createPerformanceCalculator($performance, $plays[$performance->playId]);
@@ -109,6 +115,9 @@ class StatementPrinter
         );
     }
 
+    /**
+     * @param array<EnrichedPerformance> $enrichedPerformances
+     */
     private function totalAmount(array $enrichedPerformances): int
     {
         return array_reduce(
@@ -120,6 +129,9 @@ class StatementPrinter
         );
     }
 
+    /**
+     * @param array<EnrichedPerformance> $enrichedPerformances
+     */
     private function totalVolumeCredits(array $enrichedPerformances): float
     {
         return array_reduce(
