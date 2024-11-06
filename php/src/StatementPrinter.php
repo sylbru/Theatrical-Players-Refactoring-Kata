@@ -15,13 +15,9 @@ class StatementPrinter
      */
     public function print(Invoice $invoice, array $plays): string
     {
-        $data = new \stdClass;
-        $data->customer = $invoice->customer;
-        $data->performances = array_map(fn($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
-        $data->totalAmount = $this->totalAmount($data->performances, $plays);
-        $data->volumeCredits = $this->totalVolumeCredits($data->performances, $plays);
+        $data = $this->prepareStatementData($invoice, $plays);
 
-        return $this->renderStatementPlainText($data, $plays);
+        return $this->renderStatementPlainText($data);
     }
 
     /**
@@ -29,13 +25,20 @@ class StatementPrinter
      */
     public function printHtml(Invoice $invoice, array $plays): string
     {
+        $data = $this->prepareStatementData($invoice, $plays);
+
+        return $this->renderStatementHtml($data);
+    }
+
+    private function prepareStatementData(Invoice $invoice, array $plays): \stdClass
+    {
         $data = new \stdClass;
         $data->customer = $invoice->customer;
         $data->performances = array_map(fn($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
         $data->totalAmount = $this->totalAmount($data->performances, $plays);
         $data->volumeCredits = $this->totalVolumeCredits($data->performances, $plays);
 
-        return $this->renderStatementHtml($data, $plays);
+        return $data;
     }
 
     /** @param Play[] $plays */
