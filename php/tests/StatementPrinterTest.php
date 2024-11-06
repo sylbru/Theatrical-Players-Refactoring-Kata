@@ -34,6 +34,26 @@ final class StatementPrinterTest extends TestCase
         Approvals::verifyString($result);
     }
 
+    public function testCanPrintHtmlInvoice(): void
+    {
+        $plays = [
+            'hamlet' => new Play('Hamlet', 'tragedy'),
+            'as-like' => new Play('As You Like It', 'comedy'),
+            'othello' => new Play('Othello', 'tragedy'),
+        ];
+
+        $performances = [
+            new Performance('hamlet', 55),
+            new Performance('as-like', 35),
+            new Performance('othello', 40),
+        ];
+        $invoice = new Invoice('BigCo', $performances);
+        $statementPrinter = new StatementPrinter();
+        $result = $statementPrinter->printHtml($invoice, $plays);
+
+        Approvals::verifyString($result);
+    }
+
     public function testNewPlayTypes(): void
     {
         $plays = [

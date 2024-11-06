@@ -24,6 +24,20 @@ class StatementPrinter
         return $this->renderStatementPlainText($data, $plays);
     }
 
+    /**
+     * @param array<string, Play> $plays
+     */
+    public function printHtml(Invoice $invoice, array $plays): string
+    {
+        $data = new \stdClass;
+        $data->customer = $invoice->customer;
+        $data->performances = array_map(fn($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
+        $data->totalAmount = $this->totalAmount($data->performances, $plays);
+        $data->volumeCredits = $this->totalVolumeCredits($data->performances, $plays);
+
+        return $this->renderStatementHtml($data, $plays);
+    }
+
     /** @param Play[] $plays */
     private function renderStatementPlainText(\stdClass $data): string
     {
@@ -36,6 +50,49 @@ class StatementPrinter
 
         $result .= "Amount owed is {$this->asUsd($data->totalAmount)}\n";
         $result .= "You earned {$data->volumeCredits} credits";
+
+        return $result;
+    }
+
+
+    /** @param Play[] $plays */
+    private function renderStatementHtml(\stdClass $data): string
+    {
+        $result = "<h1>Statement for {$data->customer}</h1>\n";
+
+        $result .= <<<HTML
+            <table>
+                <thead>
+                    <tr>
+                        <th>Play</th>
+                        <th>Seats</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+            HTML;
+
+        foreach ($data->performances as $enrichedPerformance) {
+            $result .= <<<HTML
+                    <tr>
+                        <td>{$enrichedPerformance->play->name}</td>
+                        <td>{$this->asUsd($enrichedPerformance->amount)}</td>
+                        <td>{$enrichedPerformance->audience}</td>
+                    <tr>
+
+            HTML;
+        }
+
+        $result .= <<<HTML
+                </tbody>
+            </table>
+
+            HTML;
+
+
+        $result .= "<p>Amount owed is <em>{$this->asUsd($data->totalAmount)}</em>.</p>\n";
+        $result .= "<p>You earned <em>{$data->volumeCredits}</em> credits</p>";
 
         return $result;
     }
