@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Theatrical;
 
-use Error;
-
 abstract class PerformanceCalculator
 {
     public function __construct(

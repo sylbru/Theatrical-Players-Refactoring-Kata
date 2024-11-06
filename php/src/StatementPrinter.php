@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Theatrical;
 
-use Error;
 use NumberFormatter;
 
 class StatementPrinter
@@ -134,8 +133,8 @@ class StatementPrinter
     private function createPerformanceCalculator(Performance $performance, Play $play): PerformanceCalculator
     {
         return match ($play->type) {
-            "comedy" => (new ComedyPerformanceCalculator($performance, $play)),
-            "tragedy" => (new TragedyPerformanceCalculator($performance, $play)),
+            'comedy' => (new ComedyPerformanceCalculator($performance, $play)),
+            'tragedy' => (new TragedyPerformanceCalculator($performance, $play)),
         };
     }
 
