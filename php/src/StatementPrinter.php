@@ -36,7 +36,7 @@ class StatementPrinter
         return new StatementData(
             customer: $invoice->customer,
             performances: $enrichedPerformances,
-            totalAmount: $this->totalAmount($enrichedPerformances, $plays),
+            totalAmount: $this->totalAmount($enrichedPerformances),
             volumeCredits: $this->totalVolumeCredits($enrichedPerformances),
         );
     }
@@ -107,7 +107,7 @@ class StatementPrinter
     /**
      * @param Play[] $plays
      */
-    private function totalAmount(array $enrichedPerformances, array $plays): int
+    private function totalAmount(array $enrichedPerformances): int
     {
         return array_reduce(
             $enrichedPerformances,
