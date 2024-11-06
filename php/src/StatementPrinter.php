@@ -158,9 +158,4 @@ class StatementPrinter
 
         return $thisAmount;
     }
-
-    private function volumeCreditsFor(EnrichedPerformance $performance): float
-    {
-        return (new PerformanceCalculator($performance->toSimplePerformance(), $performance->play))->calculateVolumeCredits();
-    }
 }
