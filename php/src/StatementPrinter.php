@@ -18,6 +18,7 @@ class StatementPrinter
         $data = new \stdClass;
         $data->customer = $invoice->customer;
         $data->performances = array_map(fn($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
+        $data->volumeCredits = $this->totalVolumeCredits($data->performances, $plays);
 
         return $this->renderStatementPlainText($data, $plays);
     }
@@ -36,7 +37,7 @@ class StatementPrinter
 
         $totalAmount = $this->totalAmount($data->performances, $plays);
         $result .= "Amount owed is {$this->asUsd($totalAmount)}\n";
-        $result .= "You earned {$this->totalVolumeCredits($data->performances, $plays)} credits";
+        $result .= "You earned {$data->volumeCredits} credits";
 
         return $result;
     }
