@@ -9,8 +9,8 @@ class EnrichedPerformance
     public function __construct(
         public string $playId,
         public int $audience,
-        public ?Play $play,
-        public ?int $amount,
+        public Play $play,
+        public int $amount,
         public float $volumeCredits,
     ) {
     }
