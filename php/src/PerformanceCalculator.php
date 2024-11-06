@@ -6,13 +6,15 @@ namespace Theatrical;
 
 use Error;
 
-class PerformanceCalculator
+abstract class PerformanceCalculator
 {
     public function __construct(
         public readonly Performance $performance,
         public readonly Play $play,
     ) {
     }
+
+    abstract public function calculateAmount(): int;
 
     public function calculateVolumeCredits(): float
     {
