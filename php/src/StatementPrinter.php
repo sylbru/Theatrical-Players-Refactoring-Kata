@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Theatrical;
 
+use Error;
 use NumberFormatter;
 
 class StatementPrinter
@@ -135,6 +136,7 @@ class StatementPrinter
         return match ($play->type) {
             'comedy' => (new ComedyPerformanceCalculator($performance, $play)),
             'tragedy' => (new TragedyPerformanceCalculator($performance, $play)),
+            default => throw new Error("Unknown play type: {$play->type}"),
         };
     }
 
