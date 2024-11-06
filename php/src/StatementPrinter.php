@@ -125,13 +125,10 @@ class StatementPrinter
     /** @param Play[] $plays */
     private function totalVolumeCredits(array $enrichedPerformances): float
     {
-        $volumeCredits = 0;
-
-        foreach ($enrichedPerformances as $enrichedPerformances) {
-            $volumeCredits += $this->volumeCreditsFor($enrichedPerformances);
-        }
-
-        return $volumeCredits;
+        return array_reduce(
+            $enrichedPerformances,
+            fn($carry, $item) => $carry + $this->volumeCreditsFor($item), 0,
+        );
     }
 
     private function asUsd(int $amount): string
