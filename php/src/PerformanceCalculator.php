@@ -20,11 +20,7 @@ class PerformanceCalculator
 
         switch ($this->play->type) {
             case 'tragedy':
-                $thisAmount = 40000;
-                if ($this->performance->audience > 30) {
-                    $thisAmount += 1000 * ($this->performance->audience - 30);
-                }
-                break;
+                throw new Error("should use polymorphism");
 
             case 'comedy':
                 $thisAmount = 30000;
