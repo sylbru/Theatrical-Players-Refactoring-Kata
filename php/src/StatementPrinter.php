@@ -22,13 +22,6 @@ class StatementPrinter
         return $this->renderStatementPlainText($data, $plays);
     }
 
-    private function enrichPerformance(Performance $performance, $plays): EnrichedPerformance
-    {
-        $play = $plays[$performance->playId];
-
-        return new EnrichedPerformance($performance->playId, $performance->audience, $play);
-    }
-
     /** @param Play[] $plays */
     private function renderStatementPlainText(\stdClass $data, array $plays): string
     {
@@ -46,6 +39,13 @@ class StatementPrinter
         $result .= "You earned {$this->totalVolumeCredits($data->performances, $plays)} credits";
 
         return $result;
+    }
+
+    private function enrichPerformance(Performance $performance, $plays): EnrichedPerformance
+    {
+        $play = $plays[$performance->playId];
+
+        return new EnrichedPerformance($performance->playId, $performance->audience, $play);
     }
 
     /** @param EnrichedPerformance[] $performances */
