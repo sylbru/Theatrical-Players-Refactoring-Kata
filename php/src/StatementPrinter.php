@@ -105,6 +105,7 @@ class StatementPrinter
             $performance->audience,
             $calculator->play,
             $calculator->calculateAmount(),
+            $calculator->calculateVolumeCredits(),
         );
     }
 

@@ -11,6 +11,7 @@ class EnrichedPerformance
         public int $audience,
         public ?Play $play,
         public ?int $amount,
+        public float $volumeCredits,
     ) {
     }
 
