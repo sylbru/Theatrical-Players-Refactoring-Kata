@@ -121,7 +121,7 @@ class StatementPrinter
     {
         return array_reduce(
             $enrichedPerformances,
-            fn ($carry, $item) => $carry + $this->volumeCreditsFor($item),
+            fn ($carry, $item) => $carry + (new PerformanceCalculator($item->toSimplePerformance(), $item->play))->calculateVolumeCredits(),
             initial: 0,
         );
     }
@@ -161,7 +161,6 @@ class StatementPrinter
 
     private function volumeCreditsFor(EnrichedPerformance $performance): float
     {
-        return (new PerformanceCalculator($performance->toSimplePerformance(), $performance->play))
-            ->calculateVolumeCredits();
+        return (new PerformanceCalculator($performance->toSimplePerformance(), $performance->play))->calculateVolumeCredits();
     }
 }
