@@ -113,7 +113,9 @@ class StatementPrinter
     {
         return array_reduce(
             $enrichedPerformances,
-            fn ($carry, $item) => $carry + $this->createPerformanceCalculator($item->toSimplePerformance(), $item->play)->calculateAmount(),
+            fn ($carry, $item) => $carry
+                + $this->createPerformanceCalculator($item->toSimplePerformance(), $item->play)
+                    ->calculateAmount(),
             0,
         );
     }
@@ -122,7 +124,9 @@ class StatementPrinter
     {
         return array_reduce(
             $enrichedPerformances,
-            fn ($carry, $item) => $carry + $this->createPerformanceCalculator($item->toSimplePerformance(), $item->play)->calculateVolumeCredits(),
+            fn ($carry, $item) => $carry
+                + $this->createPerformanceCalculator($item->toSimplePerformance(), $item->play)
+                    ->calculateVolumeCredits(),
             initial: 0,
         );
     }
