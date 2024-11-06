@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Theatrical;
 
 readonly class StatementData
@@ -10,5 +12,6 @@ readonly class StatementData
         public array $performances,
         public int $totalAmount,
         public float $volumeCredits,
-    ) {}
+    ) {
+    }
 }

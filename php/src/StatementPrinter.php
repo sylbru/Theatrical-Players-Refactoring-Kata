@@ -31,7 +31,7 @@ class StatementPrinter
 
     private function prepareStatementData(Invoice $invoice, array $plays): StatementData
     {
-        $enrichedPerformances = array_map(fn($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
+        $enrichedPerformances = array_map(fn ($performance) => $this->enrichPerformance($performance, $plays), $invoice->performances);
 
         return new StatementData(
             customer: $invoice->customer,
@@ -41,7 +41,6 @@ class StatementPrinter
         );
     }
 
-    /** @param Play[] $plays */
     private function renderStatementPlainText(StatementData $data): string
     {
         $result = "Statement for {$data->customer}\n";
@@ -57,8 +56,6 @@ class StatementPrinter
         return $result;
     }
 
-
-    /** @param Play[] $plays */
     private function renderStatementHtml(StatementData $data): string
     {
         $result = "<h1>Statement for {$data->customer}</h1>\n";
@@ -93,7 +90,6 @@ class StatementPrinter
 
             HTML;
 
-
         $result .= "<p>Amount owed is <em>{$this->asUsd($data->totalAmount)}</em>.</p>\n";
         $result .= "<p>You earned <em>{$data->volumeCredits}</em> credits</p>";
 
@@ -108,26 +104,24 @@ class StatementPrinter
         return new EnrichedPerformance($performance->playId, $performance->audience, $play, $this->amountFor($enrichedPerformanceWithoutAmount));
     }
 
-    /** @param EnrichedPerformance[] $performances */
-    /** @param Play[] $plays */
+    /**
+     * @param Play[] $plays
+     */
     private function totalAmount(array $enrichedPerformances, array $plays): int
     {
-        $totalAmount = 0;
-
-        foreach ($enrichedPerformances as $enrichedPerformance) {
-            $totalAmount += $this->amountFor($enrichedPerformance);
-        }
-
-        return $totalAmount;
+        return array_reduce(
+            $enrichedPerformances,
+            fn ($carry, $item) => $carry + $this->amountFor($item),
+            0,
+        );
     }
 
-    /** @param EnrichedPerformance[] $performances */
-    /** @param Play[] $plays */
     private function totalVolumeCredits(array $enrichedPerformances): float
     {
         return array_reduce(
             $enrichedPerformances,
-            fn($carry, $item) => $carry + $this->volumeCreditsFor($item), 0,
+            fn ($carry, $item) => $carry + $this->volumeCreditsFor($item),
+            initial: 0,
         );
     }
 
