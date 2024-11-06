@@ -122,9 +122,14 @@ class StatementPrinter
     {
         return array_reduce(
             $enrichedPerformances,
-            fn ($carry, $item) => $carry + (new PerformanceCalculator($item->toSimplePerformance(), $item->play))->calculateVolumeCredits(),
+            fn ($carry, $item) => $carry + $this->createPerformanceCalculator($item->toSimplePerformance(), $item->play)->calculateVolumeCredits(),
             initial: 0,
         );
+    }
+
+    private function createPerformanceCalculator(Performance $performance, Play $play): PerformanceCalculator
+    {
+        return (new PerformanceCalculator($performance, $play));
     }
 
     private function asUsd(int $amount): string
