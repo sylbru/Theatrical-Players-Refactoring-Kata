@@ -10,6 +10,7 @@ class EnrichedPerformance
         public string $playId,
         public int $audience,
         public ?Play $play,
+        public ?int $amount,
     ) {
     }
 }

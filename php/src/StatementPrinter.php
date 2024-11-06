@@ -30,9 +30,7 @@ class StatementPrinter
         $result = "Statement for {$data->customer}\n";
 
         foreach ($data->performances as $enrichedPerformance) {
-            $thisAmount = $this->amountFor($enrichedPerformance);
-
-            $result .= "  {$enrichedPerformance->play->name}: {$this->asUsd($thisAmount)} ";
+            $result .= "  {$enrichedPerformance->play->name}: {$this->asUsd($enrichedPerformance->amount)} ";
             $result .= "({$enrichedPerformance->audience} seats)\n";
         }
 
@@ -45,8 +43,9 @@ class StatementPrinter
     private function enrichPerformance(Performance $performance, $plays): EnrichedPerformance
     {
         $play = $plays[$performance->playId];
+        $enrichedPerformanceWithoutAmount = new EnrichedPerformance($performance->playId, $performance->audience, $play, null);
 
-        return new EnrichedPerformance($performance->playId, $performance->audience, $play);
+        return new EnrichedPerformance($performance->playId, $performance->audience, $play, $this->amountFor($enrichedPerformanceWithoutAmount));
     }
 
     /** @param EnrichedPerformance[] $performances */
