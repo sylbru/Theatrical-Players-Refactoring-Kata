@@ -14,25 +14,6 @@ class PerformanceCalculator
     ) {
     }
 
-    public function calculateAmount(): int
-    {
-        $thisAmount = 0;
-
-        switch ($this->play->type) {
-            case 'tragedy':
-                throw new Error("should use polymorphism");
-
-            case 'comedy':
-                throw new Error("idem");
-                break;
-
-            default:
-                throw new Error("Unknown type: {$this->play->type}");
-        }
-
-        return $thisAmount;
-    }
-
     public function calculateVolumeCredits(): float
     {
         $volumeCredits = max($this->performance->audience - 30, 0);
