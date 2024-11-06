@@ -37,7 +37,7 @@ class StatementPrinter
             customer: $invoice->customer,
             performances: $enrichedPerformances,
             totalAmount: $this->totalAmount($enrichedPerformances, $plays),
-            volumeCredits: $this->totalVolumeCredits($enrichedPerformances, $plays),
+            volumeCredits: $this->totalVolumeCredits($enrichedPerformances),
         );
     }
 
@@ -123,7 +123,7 @@ class StatementPrinter
 
     /** @param EnrichedPerformance[] $performances */
     /** @param Play[] $plays */
-    private function totalVolumeCredits(array $enrichedPerformances, array $plays): float
+    private function totalVolumeCredits(array $enrichedPerformances): float
     {
         $volumeCredits = 0;
 
